@@ -1,6 +1,7 @@
 package checkgrpc_test
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"testing"
@@ -9,6 +10,14 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
+
+// causeError implements Cause() for testing the cause() unwrap path.
+type causeError struct {
+	err error
+}
+
+func (e *causeError) Error() string { return e.err.Error() }
+func (e *causeError) Cause() error  { return e.err }
 
 func TestErrGRPCStatus(tt *testing.T) {
 	tt.Parallel()
@@ -97,4 +106,54 @@ func TestNonGRPCErrors(tt *testing.T) {
 	todo.NotErr(nil, nil)
 	todo.Err(nil, io.EOF)
 	t.NotErr(nil, io.EOF)
+}
+
+func TestErrWithCause(tt *testing.T) {
+	tt.Parallel()
+	t := check.T(tt)
+
+	grpcErr := status.Error(codes.Unknown, "unknown")
+	grpcErrDiff := status.Error(codes.Internal, "internal")
+
+	// Error with Cause() wrapping a gRPC error.
+	// This exercises the cause() function's c.Cause() path (line 74).
+	t.Err(&causeError{err: grpcErr}, grpcErr)
+	t.NotErr(&causeError{err: grpcErr}, grpcErrDiff)
+	t.NotErr(&causeError{err: grpcErr}, io.EOF)
+
+	// Error with Cause() wrapping a non-gRPC error.
+	t.Err(&causeError{err: io.EOF}, io.EOF)
+	t.NotErr(&causeError{err: io.EOF}, io.ErrUnexpectedEOF)
+
+	// Chain of Cause() errors.
+	t.Err(&causeError{err: &causeError{err: grpcErr}}, grpcErr)
+	t.NotErr(&causeError{err: &causeError{err: grpcErr}}, grpcErrDiff)
+}
+
+func TestErrJoinedGRPC(tt *testing.T) {
+	tt.Parallel()
+	t := check.T(tt)
+
+	grpcErr := status.Error(codes.Unknown, "unknown")
+	grpcErrDiff := status.Error(codes.Internal, "internal")
+
+	// errors.Join with multiple errors where first is gRPC.
+	// This exercises the interface{ Unwrap() []error } path (lines 53-57).
+	joined := errors.Join(grpcErr, io.EOF)
+	t.Err(joined, grpcErr)
+	t.NotErr(joined, grpcErrDiff)
+
+	// errors.Join with single gRPC error.
+	joinedSingle := errors.Join(grpcErr)
+	t.Err(joinedSingle, grpcErr)
+
+	// errors.Join with gRPC error wrapped in another Join.
+	doubleJoined := errors.Join(errors.Join(grpcErr, io.EOF), io.ErrUnexpectedEOF)
+	t.Err(doubleJoined, grpcErr)
+	t.NotErr(doubleJoined, grpcErrDiff)
+
+	// Wrap gRPC error in both Cause() and Join for combined coverage.
+	combined := errors.Join(&causeError{err: grpcErr}, io.EOF)
+	t.Err(combined, grpcErr)
+	t.NotErr(combined, grpcErrDiff)
 }
