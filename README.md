@@ -11,4 +11,10 @@
 ![macOS | amd64 arm64](https://img.shields.io/badge/macOS-amd64%20arm64-royalblue)
 ![Windows | amd64 arm64](https://img.shields.io/badge/Windows-amd64%20arm64-royalblue)
 
-gRPC status error comparison for github.com/powerman/check
+gRPC status error comparison for <https://github.com/powerman/check>.
+
+Import this package as a blank import in your test file or `TestMain`
+to enable gRPC status comparison via `check.Err`/`check.NotErr`.
+
+It also imports <https://github.com/powerman/checkproto>,
+so a single blank import covers both protobuf message and gRPC status comparison.
