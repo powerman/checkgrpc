@@ -21,7 +21,7 @@ func (e *causeError) Cause() error  { return e.err }
 
 func TestErrGRPCStatus(tt *testing.T) {
 	tt.Parallel()
-	t := check.T(tt)
+	t := check.Must(tt)
 	todo := t.TODO()
 
 	grpcErr := status.Error(codes.Unknown, "unknown")
@@ -53,7 +53,7 @@ func TestErrGRPCStatus(tt *testing.T) {
 
 func TestNotErrGRPCStatus(tt *testing.T) {
 	tt.Parallel()
-	t := check.T(tt)
+	t := check.Must(tt)
 	todo := t.TODO()
 
 	grpcErr := status.Error(codes.Unknown, "unknown")
@@ -70,7 +70,7 @@ func TestNotErrGRPCStatus(tt *testing.T) {
 
 func TestErrWrappedGRPC(tt *testing.T) {
 	tt.Parallel()
-	t := check.T(tt)
+	t := check.Must(tt)
 	todo := t.TODO()
 
 	grpcErr := status.Error(codes.Unknown, "unknown")
@@ -92,7 +92,7 @@ func TestErrWrappedGRPC(tt *testing.T) {
 
 func TestNonGRPCErrors(tt *testing.T) {
 	tt.Parallel()
-	t := check.T(tt)
+	t := check.Must(tt)
 	todo := t.TODO()
 
 	// Non-gRPC errors should work normally.
@@ -110,7 +110,7 @@ func TestNonGRPCErrors(tt *testing.T) {
 
 func TestErrWithCause(tt *testing.T) {
 	tt.Parallel()
-	t := check.T(tt)
+	t := check.Must(tt)
 
 	grpcErr := status.Error(codes.Unknown, "unknown")
 	grpcErrDiff := status.Error(codes.Internal, "internal")
@@ -132,7 +132,7 @@ func TestErrWithCause(tt *testing.T) {
 
 func TestErrJoinedGRPC(tt *testing.T) {
 	tt.Parallel()
-	t := check.T(tt)
+	t := check.Must(tt)
 
 	grpcErr := status.Error(codes.Unknown, "unknown")
 	grpcErrDiff := status.Error(codes.Internal, "internal")
