@@ -5,7 +5,7 @@ go 1.26.0
 require (
 	github.com/powerman/check v1.14.0
 	github.com/powerman/checkproto v0.2.1
-	google.golang.org/grpc v1.84.0
+	google.golang.org/grpc v1.85.0
 	google.golang.org/protobuf v1.36.12
 )
 
