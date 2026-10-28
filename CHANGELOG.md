@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-10-28
+
+### 🔔 Changed
+
+- Require Go 1.26 by @powerman in [4984969]
+
+### 📦️ Dependencies
+
+- **(deps)** Upgrade go and golangci-lint by @powerman in [09f80e1]
+- **(deps)** Upgrade go modules by @powerman in [a965fcd]
+- **(deps)** Upgrade go and golangci-lint by @powerman in [ecc56a3]
+- **(deps)** Upgrade go modules by @powerman in [22fd0aa]
+- **(deps)** Mise up by @powerman in [8cf7293]
+
+[0.3.0]: https://github.com/powerman/checkgrpc/compare/v0.2.1..v0.3.0
+[09f80e1]: https://github.com/powerman/checkgrpc/commit/09f80e123be6881e682fe8b532b004a18ed8e63b
+[a965fcd]: https://github.com/powerman/checkgrpc/commit/a965fcdb968b929f0dc62c32f64791dedf5c94b7
+[ecc56a3]: https://github.com/powerman/checkgrpc/commit/ecc56a3f8e0f09a6da632f490ac8555cb7825851
+[22fd0aa]: https://github.com/powerman/checkgrpc/commit/22fd0aa2be60ddc5a45a8e55e57dfddddf2f54b6
+[4984969]: https://github.com/powerman/checkgrpc/commit/4984969db07691f4e4142adb2b43b468ee110804
+[8cf7293]: https://github.com/powerman/checkgrpc/commit/8cf72939c3fa7a68b2b3aa39f1b14b9d32eff85f
+
 ## [0.2.1] - 2026-07-11
 
 [0.2.1]: https://github.com/powerman/checkgrpc/compare/v0.2.0..v0.2.1
